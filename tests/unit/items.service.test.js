@@ -5,7 +5,7 @@ beforeEach(() => store.resetStore());
 
 describe("Items Service", () => {
   test("createItem should add item", () => {
-    const item = service.createItem("A");
+    const item = service.createItem("B");
 
     expect(item.id).toBe(1);
     expect(service.getAllItems().length).toBe(1);
