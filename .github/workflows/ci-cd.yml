@@ -1,0 +1,41 @@
+name: CI-CD Demo Pipeline
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-test-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      # --- Docker build ---
+      - name: Build Docker image
+        run: docker build -t ghcr.io/${{ github.repository }}/simple-api:latest .
+
+      # --- Login to GitHub Container Registry ---
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # --- Push image ---
+      - name: Push Docker image
+        run: docker push ghcr.io/${{ github.repository }}/simple-api:latest
