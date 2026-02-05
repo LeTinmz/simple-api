@@ -26,7 +26,7 @@ jobs:
 
       # --- Docker build ---
       - name: Build Docker image
-        run: docker build -t ghcr.io/${{ github.repository }}/simple-api:latest .
+        run: docker build -t ghcr.io/${{ github.actor }}/simple-api:latest .
 
       # --- Login to GitHub Container Registry ---
       - name: Log in to GHCR
